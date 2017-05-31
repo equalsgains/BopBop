@@ -1,18 +1,18 @@
 var c = {};
 var t = {};
 var s = [];
-var course = "";
+course1 = document.URL.substring(document.URL.indexOf('/courses/') + 9);
+if (course1.indexOf('/') !== -1) {
+    course = course1.substring(0, course1.indexOf('/'));
+} else {
+    course = course1;
+}
 
 function getcourseObj() {
 
 
 
-    course1 = document.URL.substring(document.URL.indexOf('/courses/') + 9);
-    if (course1.indexOf('/') !== -1) {
-        course = course1.substring(0, course1.indexOf('/'));
-    } else {
-        course = course1;
-    }
+
 
     $.ajax({
         url: 'https://' + document.domain + '/api/v1/courses/' + course + '/',
@@ -34,7 +34,7 @@ function getcourseObj() {
 
 
         }
-    })
+    });
 };
 function getTermObj() {
     $.ajax({
@@ -56,7 +56,7 @@ function getTermObj() {
                 }
             };
         }
-    })
+    });
 
 };
 
@@ -232,5 +232,5 @@ chrome.runtime.onMessage.addListener(
             "from a content script:" + sender.tab.url :
             "from the extension");
         if (request.getDomain == true)
-            sendResponse({ domain: document.domain });
+            sendResponse({ domain: document.domain, course: course });
     });
