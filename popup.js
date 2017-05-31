@@ -1,11 +1,14 @@
 
-var access_token = "17~gthKCxu98m2FtNQh4k9Pd5R5tatv3uwMk4fK1AEiSI3cgNyratuH6v6D6AjCP21d";
+var access_token = localStorage.Access_token;
 var c = {};
 var t = {};
 var s = [];
 var info = {};
 var domain = "";
 var courseNum = "";
+
+
+
 
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.sendMessage(tabs[0].id, { getDomain: true }, function (response) {
@@ -18,7 +21,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         $.ajax({
             url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/',
             type: 'GET',
-            data: 'per_page=100',
+            data: 'per_page=100&cross_domain_login=siteadmin.instructure.com',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", "Bearer " + access_token);
             },
@@ -40,7 +43,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         $.ajax({
             url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/sections',
             type: 'GET',
-            data: 'per_page=100',
+            data: 'per_page=100&cross_domain_login=siteadmin.instructure.com',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", "Bearer " + access_token);
             },
@@ -63,7 +66,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             $.ajax({
                 url: 'https://' + domain + '/api/v1/accounts/' + c.root_account + '/terms/',
                 type: 'GET',
-                data: 'per_page=100',
+                data: 'per_page=100&cross_domain_login=siteadmin.instructure.com',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
                 },
@@ -95,7 +98,9 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 
 
 $('#retrieve').on("click", function () {
+
     $(this).css({ "display": "none" });
+    $('#links').css({ "display": "none" })
     Typed.new('.bopBop', {
         strings: ["Bop ", "Bop "],
         typeSpeed: 0
@@ -173,3 +178,15 @@ function spitSectionsInfo() {
         $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/sections/' + s[i].id + ' target="_blank"><div class="panel panel-blue"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Section</h1><i class="fa fa-tasks fa-2x"></i></div><div class="col-xs-9 text-right"><div class="huge">' + s[i].name + '</div><li><span class="StartEnd">Start</span> ' + sstart + '</li><li><span class="StartEnd">End</span> ' + send + '</li></a>');
     };
 };
+
+
+window.addEventListener('DOMContentLoaded', function () {
+    // your button here
+    var link = document.getElementById('links');
+    // onClick's logic below:
+    link.addEventListener('click', function () {
+        var newURL = 'http://' + domain + '/courses/' + courseNum + '/link_validator?cross_domain_login=siteadmin.instructure.com';
+        chrome.tabs.create({ url: newURL });
+    });
+});
+

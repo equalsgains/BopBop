@@ -153,13 +153,15 @@ span.typed-cursor {
     font-size: 16px;
 }
 
-#retrieve{
+#retrieve, #links{
     background: #000;
     color: #fff;
-    vertical-align: text-top;
     display: block;
     height: 60px;
     font-size: 16px;
+    text-align: center;
+vertical-align: middle;
+line-height: 40px; 
 }
 
 .typed-cursor{
@@ -182,4 +184,37 @@ span.typed-cursor {
     0% { opacity:1; }
     50% { opacity:0; }
     100% { opacity:1; }
+}
+
+
+
+#tokenInput {
+    color: #2e6da4;
+}
+
+input {
+    background: #000;
+    color: #00FF00;
+    display: block;
+    margin: 50px auto;
+    width: 500px;
+    height: 30px;
+}
+
+#tokenTitle {
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 300;
+    display: block;
+    font-size: 24px;
+}
+
+#saveToken {
+    display: block;
+    color: white;
+    text-align: center;
+    height: 85px;
+    border: #2e6da4;
+    margin: 100px auto;
+    width: 400px;
 }
