@@ -1,4 +1,4 @@
-chrome.extension.onMessage.addListener(
+chrome.browserAction.onClicked.addListener(
     function(request, sender, sendResponse) {
         switch (request.directive) {
         case "tokenButton":

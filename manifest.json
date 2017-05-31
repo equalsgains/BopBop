@@ -8,9 +8,15 @@
         "default_popup": "popup.html"
     },
     "content_scripts": [ {
-    "js": [ "jquery-2.1.3.min.js", "popup.js"],
+    "js": [ "jquery-2.1.3.min.js", "content.js"],
     "matches": [ "http://*/*", "https://*/*"]
     }],
+        "background": {
+            "scripts": [
+                "jquery-2.1.3.min.js"
+            ],
+            "persistent": false
+        },
 
     "permissions": [
         "activeTab", "http://*/*", "https://*/*", "storage"
