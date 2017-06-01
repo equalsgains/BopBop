@@ -195,26 +195,83 @@ line-height: 40px;
 input {
     background: #000;
     color: #00FF00;
+    font-family: monospace;
     display: block;
     margin: 50px auto;
     width: 500px;
     height: 30px;
+    
 }
 
 #tokenTitle {
     text-align: center;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: monospace;
     font-weight: 300;
     display: block;
     font-size: 24px;
 }
 
-#saveToken {
-    display: block;
-    color: white;
+#saveToken, #resetToken {
+  color: #00FF00;
+  font-family: monospace;
+  background: inherit;
+  width: 150px;
+
+}
+
+
+.BTNcontainer {
     text-align: center;
-    height: 85px;
-    border: #2e6da4;
-    margin: 100px auto;
-    width: 400px;
+
+}
+
+.hideItem {
+    display: none;
+}
+
+.Message {
+    color: #00FF00;
+    text-align: center;
+    font-family: monospace;
+    font-size: 30px; 
+    margin: 150px;
+}
+
+.showItem {
+    display: block;
+}
+
+#enterToken{
+    width: 500px;
+    margin: 150px auto;
+    text-align: center;
+    font-family: monospace;
+    font-size: 24px;
+    color: #fff;
+}
+
+a:hover, a:active, a:focus {
+    outline: none;
+    border: 0;
+    text-decoration: none;
+}
+
+#optionsBTN {
+    margin: 0 auto;
+    display: block;
+    height: 10px;
+    padding: 0;
+    width: 50px;
+    transition: 500ms;
+    color: #000;
+    background-color: #2e6da4;
+    outline: none;
+    border: 0;
+    text-decoration: none;
+
+}
+
+#optionsBTN:hover {
+    height: 35px;
+
 }

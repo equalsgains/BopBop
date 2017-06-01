@@ -1,4 +1,9 @@
 
+var domDomain = document.domain;
+$('#optionsLink').attr('href', 'chrome-extension://' + domDomain + '/options.html');
+
+
+
 var access_token = localStorage.Access_token;
 var c = {};
 var t = {};
@@ -95,7 +100,12 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 
 
 
-
+$('#optionsBTN').on("mouseenter", function(){
+    $('#settingsIcon').fadeIn();
+});
+$('#optionsBTN').on("mouseleave", function () {
+    $('#settingsIcon').fadeOut();
+});
 
 $('#retrieve').on("click", function () {
 

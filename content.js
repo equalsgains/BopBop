@@ -20,13 +20,15 @@ chrome.runtime.onMessage.addListener(
     });
 
 
-function trigger(tab) {
+function trigger() {
     
     $('button.Button').trigger('click');
 }; 
 
-
-chrome.tabs.executeScript(null, {
-    code: "$('button.Button').trigger('click');"}
+document.addEventListener("DOMContentLoaded", function () {
+    chrome.tabs.onCreated.addListener(function() {
+        console.log("hey");
+    }
 
 );
+});
