@@ -19,16 +19,3 @@ chrome.runtime.onMessage.addListener(
             sendResponse({ domain: document.domain, course: course });
     });
 
-
-function trigger() {
-    
-    $('button.Button').trigger('click');
-}; 
-
-document.addEventListener("DOMContentLoaded", function () {
-    chrome.tabs.onCreated.addListener(function() {
-        console.log("hey");
-    }
-
-);
-});

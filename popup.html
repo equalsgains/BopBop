@@ -24,19 +24,26 @@
 </head>
 
 <body>
+    <div id="overlay">
+          <div id="text"><h3>Set Token <a href="#" id="overlayOptions" target="_blank">HERE</a> <h3></div>
+
+    </div>
     <div id="ui" class="container">
-        <a href="#" id="optionsLink" target="_blank"> <button id="optionsBTN" class="btn"><i id="settingsIcon" class="hideItem fa fa-cogs fa-2x"></i></button></a>
+        <a href="#" id="optionsLink" target="_blank"> <button id="optionsBTN" class="btn"><i id="settingsIcon" class="fa fa-cogs fa-2x"></i></button></a>
         <div class="loader">
 
         </div>
-        <div class="bopBop"></div>
-        <div id="retrieve" class="btn btn-primary align-middle">Bop Bop</div>
-        <div></div>
-        <div class=" btn btn-primary" id="links" class="btn btn-primary align-middle">Validate links</div>
-
-
         <div id="container">
         </div>
+        <div class="bopBop"></div>
+        <div class="btn btn-primary align-middle loaders" id="loadingD"><i class="fa fa-spinner fa-spin"></i> Retrieving Dates</div>
+        <div id="retrieve" class="hideItem btn btn-primary align-middle">Get All Dates</div>
+        <div></div>
+        <div class=" btn btn-primary" id="links" class="btn btn-primary align-middle">Validate links</div>
+        <div class="btn btn-primary align-middle loaders" id="loadingT"><i class="fa fa-spinner fa-spin"></i> Wainting on the teacher</div>
+        <div id="recentTeacherBTN" class="hideItem btn btn-primary align-middle">Recent Teacher</div>
+
+        
     </div>
   
 
@@ -51,9 +58,6 @@
     <script src="popup.js">
 
     </script>
-
-
-
 
 </body>
 
