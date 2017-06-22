@@ -178,11 +178,11 @@ chrome.tabs.query({
                 })
             },
             error: function(a, e, s) {
-                404 == a.status && console.log("we have 404"), 401 == a.status && void 0 !== access_token ? (console.log("we have 401"), $("#overlay1").css({
+                404 == a.status && void 0 !== access_token && (console.log("we have 404"), $("#overlay2").css({
                     display: "block"
-                })) : $("#overlay2").css({
+                })), 401 == a.status && void 0 !== access_token && (console.log("we have 401"), $("#overlay1").css({
                     display: "block"
-                })
+                }))
             }
         }), $.ajax({
             url: "https://" + domain + "/api/v1/courses/" + courseNum + "/sections",
