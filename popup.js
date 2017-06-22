@@ -32,12 +32,12 @@ var tEmail = "";
 var sns = [];
 var eve = [];
 var today = new Date();
-var checking = setInterval(function () { checkIfDone() }, 1200);
+var checking = setInterval(function () { checkIfDone() }, 1500);
 function checkIfDone() {
     if (sectionsDone !== false) {
         $('#loadingD').addClass("hideItem");
         $('#retrieve').removeClass('hideItem');
-        $('#retrieve').fadeOut("fast");
+        $('#retrieve').fadeOut(300);
         $('#retrieve').fadeIn("slow");
     }
 }
@@ -101,7 +101,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                     console.log("we got the teacher");
                     $('#loadingT').addClass("hideItem");
                     $('#recentTeacherBTN').removeClass('hideItem');
-                    $('#recentTeacherBTN').fadeOut("fast");
+                    $('#recentTeacherBTN').fadeOut(300);
                     $('#recentTeacherBTN').fadeIn("slow");
 
                 });
@@ -319,12 +319,12 @@ function spitCourseInfo() {
 
 
     if (today < cstart && cstart !== " Nada") {
-        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/settings  target="_blank"><div class="panel panel-red"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Course</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-graduation-cap fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">' + c.name + '</div><li><span class="StartEnd redText">Start</span> ' + cstart + '</li><li><span class="StartEnd">End</span> ' + cend + '</li>');
+        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/settings  target="_blank"><div class="panel panel-red"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Course</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-graduation-cap fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + c.name + '"></div><li><span class="StartEnd redText">Start</span> ' + cstart + '</li><li><span class="StartEnd">End</span> ' + cend + '</li>');
 
     } else if (today > cend && cend !== " Nada") {
-        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/settings  target="_blank"><div class="panel panel-red"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Course</h1><p class="redText">Already Ended 😘 </p><i class="fa fa-graduation-cap fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">' + c.name + '</div><li><span class="StartEnd">Start</span> ' + cstart + '</li><li><span class="StartEnd redText">End</span> ' + cend + '</li>');
+        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/settings  target="_blank"><div class="panel panel-red"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Course</h1><p class="redText">Already Ended 😘 </p><i class="fa fa-graduation-cap fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + c.name + '"></div><li><span class="StartEnd">Start</span> ' + cstart + '</li><li><span class="StartEnd redText">End</span> ' + cend + '</li>');
     } else {
-        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/settings  target="_blank"><div class="panel panel-red"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Course</h1><p>Looks Good! 🙌 </p><i class="fa fa-graduation-cap fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">' + c.name + '</div><li><span class="StartEnd">Start</span> ' + cstart + '</li><li><span class="StartEnd">End</span> ' + cend + '</li>');
+        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/settings  target="_blank"><div class="panel panel-red"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Course</h1><p>Looks Good! 🙌 </p><i class="fa fa-graduation-cap fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + c.name + '"></div><li><span class="StartEnd">Start</span> ' + cstart + '</li><li><span class="StartEnd">End</span> ' + cend + '</li>');
     }
 };
 
@@ -342,15 +342,15 @@ function spitTermInfo() {
 
     if (today < tstart && tstart !== " Nada") {
 
-        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">' + t.name + '</div><li><span class="StartEnd">Start</span> ' + tstart + '</li><li><span class="StartEnd">End</span> ' + tend + '</li>');
+        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + t.name + '"></div><li><span class="StartEnd">Start</span> ' + tstart + '</li><li><span class="StartEnd">End</span> ' + tend + '</li>');
 
     } else if (today > tend && tend !== " Nada") {
 
-        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Already Ended 😘 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">' + t.name + '</div><li><span class="StartEnd">Start</span> ' + tstart + '</li><li><span class="StartEnd redText">End</span> ' + tend + '</li>');
+        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Already Ended 😘 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + t.name + '"></div><li><span class="StartEnd">Start</span> ' + tstart + '</li><li><span class="StartEnd redText">End</span> ' + tend + '</li>');
 
     } else {
 
-        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p>Looks Good! 🙌 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">' + t.name + '</div><li><span class="StartEnd">Start</span> ' + tstart + '</li><li><span class="StartEnd">End</span> ' + tend + '</li>');
+        $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p>Looks Good! 🙌 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + t.name + '"></div><li><span class="StartEnd">Start</span> ' + tstart + '</li><li><span class="StartEnd">End</span> ' + tend + '</li>');
     }
 
 };
@@ -369,12 +369,12 @@ function spitSectionsInfo() {
         }
 
         if (today < sstart && sstart !== " Nada") {
-            $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/sections/' + s[i].sectionId + ' target="_blank"><div class="panel panel-blue"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Section</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-tasks fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><li><input class="dNames" id="copy-text" tabindex="1" autocomplete="off" type="text" value="' + s[i].name + '"></li><li><span class="StartEnd redText">Start</span> ' + sstart + '</li><li><span class="StartEnd">End</span> ' + send + '</li></div>');
+            $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/sections/' + s[i].sectionId + ' target="_blank"><div class="panel panel-blue"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Section</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-tasks fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><li><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + s[i].name + '"></li><li><span class="StartEnd redText">Start</span> ' + sstart + '</li><li><span class="StartEnd">End</span> ' + send + '</li></div>');
 
         } else if (today > send && send !== " Nada") {
-            $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/sections/' + s[i].sectionId + ' target="_blank"><div class="panel panel-blue"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Section</h1><p class="redText">Already Ended 😘 </p><i class="fa fa-tasks fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><li><input class="dNames" id="copy-text" tabindex="1" autocomplete="off" type="text" value="' + s[i].name + '"></li><li><span class="StartEnd">Start</span> ' + sstart + '</li><li><span class="StartEnd redText">End</span> ' + send + '</li></div>');
+            $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/sections/' + s[i].sectionId + ' target="_blank"><div class="panel panel-blue"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Section</h1><p class="redText">Already Ended 😘 </p><i class="fa fa-tasks fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><li><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + s[i].name + '"></li><li><span class="StartEnd">Start</span> ' + sstart + '</li><li><span class="StartEnd redText">End</span> ' + send + '</li></div>');
         } else {
-            $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/sections/' + s[i].sectionId + ' target="_blank"><div class="panel panel-blue"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Section</h1><p>Looks Good! 🙌 </p><i class="fa fa-tasks fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><li><input class="dNames" id="copy-text" tabindex="1" autocomplete="off" type="text" value="' + s[i].name + '"></li><li><span class="StartEnd">Start</span> ' + sstart + '</li><li><span class="StartEnd">End</span> ' + send + '</li></div>');
+            $('#container').append('<a class="slide-fade show" href=https://' + domain + '/courses/' + courseNum + '/sections/' + s[i].sectionId + ' target="_blank"><div class="panel panel-blue"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Section</h1><p>Looks Good! 🙌 </p><i class="fa fa-tasks fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><li><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + s[i].name + '"></li><li><span class="StartEnd">Start</span> ' + sstart + '</li><li><span class="StartEnd">End</span> ' + send + '</li></div>');
         }
     };
 };

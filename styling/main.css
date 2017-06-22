@@ -51,7 +51,7 @@ li {
         	-webkit-box-shadow: 0 8px 30px -8px #fff;
 	        box-shadow: 0 8px 30px -8px #fff;
             line-height: 25px;
-    width: 370px;
+    width: 375px;
 }
 span.StartEnd {
     color: #00FF00;
@@ -271,7 +271,7 @@ h1, li, i {
 input {
     background: #000;
     color: #00FF00;
-    font-family: monospace;
+    font-family: 'Open Sans';
     display: block;
     margin: 50px auto;
     width: 500px;
@@ -412,6 +412,7 @@ input.dNames {
     padding-right: 0;
     text-align: right;
     width: 96%;
+    border: none;
 }
 
 .orderedList li {
@@ -427,3 +428,4 @@ input.dNames {
 p {
     margin: 0;
 }
+
