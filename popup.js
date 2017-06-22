@@ -107,15 +107,14 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                 });
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                if (xhr.status == 404) {
+                if (xhr.status == 404 && access_token !== undefined) {
                     console.log("we have 404");
+                    $('#overlay2').css({ "display": "block" });
                 }
                 if (xhr.status == 401 && access_token !== undefined) {
                     console.log("we have 401");
                     $('#overlay1').css({ "display": "block" });
-                } else {
-                    $('#overlay2').css({ "display": "block" });
-                }
+                } 
             }
         });
 
