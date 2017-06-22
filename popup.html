@@ -5,12 +5,6 @@
     <script src="jquery-2.1.3.min.js">
 
     </script>
-    <!--<script src="popup.js">
-
-    </script>-->
-
-
-
     <title>CanvasDates UI</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +19,38 @@
 
 <body>
     <div id="overlay">
-          <div id="text"><h3>Set Token <a href="#" id="overlayOptions" target="_blank">HERE</a> <h3></div>
+        <div id="text">
+            <h3>Set Token <a href="#" id="overlayOptions" target="_blank">HERE</a>
+                <h3>
+        </div>
+
+    </div>
+    <div id="overlay1">
+        <div id="text">
+            <h3>"Unauthorized"</h3>
+            <ol class="orderedList">
+                <li>Make sure that you're not masquerading as a student.</li>
+                <li>Reset Token if needed by clicking <a id="overlayOptions1" href="#" target="_blank">HERE</a></li>
+                <li>
+                    <div class=" btn btn-primary" id="refreshTab1" class="btn btn-primary align-middle">Try Again</div>
+                </li>
+
+            </ol>
+        </div>
+
+    </div>
+
+    <div id="overlay2">
+        <div id="text">
+            <h3>Something didn't go right :'(</h3>
+            <ol class="orderedList">
+                <li>Make sure that you're in a course</li>
+                <li>
+                    <div class=" btn btn-primary" id="refreshTab" class="btn btn-primary align-middle">Try Again</div>
+                </li>
+
+            </ol>
+        </div>
 
     </div>
     <div id="ui" class="container">
@@ -40,17 +65,12 @@
         <div id="retrieve" class="hideItem btn btn-primary align-middle">Get All Dates</div>
         <div></div>
         <div class=" btn btn-primary" id="links" class="btn btn-primary align-middle">Validate links</div>
-        <div class="btn btn-primary align-middle loaders" id="loadingT"><i class="fa fa-spinner fa-spin"></i> Wainting on the teacher</div>
+        <div class="btn btn-primary align-middle loaders" id="loadingT"><i class="fa fa-spinner fa-spin"></i> Waiting on the teacher</div>
         <div id="recentTeacherBTN" class="hideItem btn btn-primary align-middle">Recent Teacher</div>
+        <div class="btn btn-primary align-middle loaders hideItem" id="noTeacher">I wasn't able to find a teacher. Click <a href="#" target="_blank" id="peopleTab">ME</a> to see all enrollents</div>
 
-        
+
     </div>
-  
-
-
-
-
-
     <script src="typed.js">
 
     </script>

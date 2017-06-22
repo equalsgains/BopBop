@@ -1,33 +1,10 @@
-// The MIT License (MIT)
-
-// Typed.js | Copyright (c) 2016 Matt Boldt | www.mattboldt.com
-
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
 
 
-
-
-! function(window, document, $) {
+! function (window, document, $) {
 
 	"use strict";
 
-	var Typed = function(el, options) {
+	var Typed = function (el, options) {
 		var self = this;
 
 		// chosen element to manipulate text
@@ -35,10 +12,10 @@
 
 		// options
 		this.options = {};
-		Object.keys(defaults).forEach(function(key) {
+		Object.keys(defaults).forEach(function (key) {
 			self.options[key] = defaults[key];
 		});
-		Object.keys(options).forEach(function(key) {
+		Object.keys(options).forEach(function (key) {
 			self.options[key] = options[key];
 		});
 
@@ -73,7 +50,7 @@
 		this.fadeOutDelay = this.options.fadeOutDelay;
 
 		// div containing strings
-		if($ && this.options.stringsElement instanceof $) {
+		if ($ && this.options.stringsElement instanceof $) {
 			this.stringsElement = this.options.stringsElement[0]
 		} else {
 			this.stringsElement = this.options.stringsElement;
@@ -117,22 +94,22 @@
 
 		constructor: Typed,
 
-		init: function() {
+		init: function () {
 			// begin the loop w/ first current string (global self.strings)
 			// current string will be passed as an argument each time after this
 			var self = this;
-			self.timeout = setTimeout(function() {
-				for (var i=0;i<self.strings.length;++i) self.sequence[i]=i;
+			self.timeout = setTimeout(function () {
+				for (var i = 0; i < self.strings.length; ++i) self.sequence[i] = i;
 
 				// shuffle the array if true
-				if(self.shuffle) self.sequence = self.shuffleArray(self.sequence);
+				if (self.shuffle) self.sequence = self.shuffleArray(self.sequence);
 
 				// Start typing
 				self.typewrite(self.strings[self.sequence[self.arrayPos]], self.strPos);
 			}, self.startDelay);
 		},
 
-		build: function() {
+		build: function () {
 			var self = this;
 			// Insert cursor
 			if (this.showCursor === true) {
@@ -145,7 +122,7 @@
 				this.strings = [];
 				this.stringsElement.style.display = 'none';
 				var strings = Array.prototype.slice.apply(this.stringsElement.children);
-				strings.forEach(function(stringElement){
+				strings.forEach(function (stringElement) {
 					self.strings.push(stringElement.innerHTML);
 				});
 			}
@@ -153,7 +130,7 @@
 		},
 
 		// pass current string state to each function, types 1 char per call
-		typewrite: function(curString, curStrPos) {
+		typewrite: function (curString, curStrPos) {
 			// exit when stopped
 			if (this.stop === true) {
 				return;
@@ -164,21 +141,10 @@
 				this.cursor.classList.remove(this.fadeOutClass);
 			}
 
-			// varying values for setTimeout during typing
-			// can't be global since number changes each time loop is executed
 			var humanize = Math.round(Math.random() * (100 - 30)) + this.typeSpeed;
 			var self = this;
 
-			// ------------- optional ------------- //
-			// backpaces a certain string faster
-			// ------------------------------------ //
-			// if (self.arrayPos == 1){
-			//  self.backDelay = 50;
-			// }
-			// else{ self.backDelay = 500; }
-
-			// contain typing function in a timeout humanize'd delay
-			self.timeout = setTimeout(function() {
+			self.timeout = setTimeout(function () {
 				// check for an escape character before a pause value
 				// format: \^\d+ .. eg: ^1000 .. should be able to print the ^ too using ^^
 				// single ^ are removed from string
@@ -219,7 +185,7 @@
 				}
 
 				// timeout for any pause after a character
-				self.timeout = setTimeout(function() {
+				self.timeout = setTimeout(function () {
 					if (curStrPos === curString.length) {
 						// fires callback function
 						self.options.onStringTyped(self.arrayPos);
@@ -236,7 +202,7 @@
 								return;
 						}
 
-						self.timeout = setTimeout(function() {
+						self.timeout = setTimeout(function () {
 							self.backspace(curString, curStrPos);
 						}, self.backDelay);
 
@@ -275,14 +241,14 @@
 
 		},
 
-		backspace: function(curString, curStrPos) {
+		backspace: function (curString, curStrPos) {
 			var self = this;
 			// exit when stopped
 			if (this.stop === true) {
 				return;
 			}
 
-			if (this.fadeOut){
+			if (this.fadeOut) {
 				this.initFadeOut();
 				return;
 			}
@@ -291,20 +257,7 @@
 			// can't be global since number changes each time loop is executed
 			var humanize = Math.round(Math.random() * (100 - 30)) + this.backSpeed;
 
-			self.timeout = setTimeout(function() {
-
-				// ----- this part is optional ----- //
-				// check string array position
-				// on the first string, only delete one word
-				// the stopNum actually represents the amount of chars to
-				// keep in the current string. In my case it's 14.
-				// if (self.arrayPos == 1){
-				//  self.stopNum = 14;
-				// }
-				//every other time, delete the whole typed string
-				// else{
-				//  self.stopNum = 0;
-				// }
+			self.timeout = setTimeout(function () {
 
 				if (self.contentType === 'html') {
 					// skip over html tags while backspacing
@@ -342,7 +295,7 @@
 						self.arrayPos = 0;
 
 						// Shuffle sequence again
-						if(self.shuffle) self.sequence = self.shuffleArray(self.sequence);
+						if (self.shuffle) self.sequence = self.shuffleArray(self.sequence);
 
 						self.init();
 					} else
@@ -355,16 +308,16 @@
 		},
 
 		// Adds a CSS class to fade out current string
-		initFadeOut: function(){
+		initFadeOut: function () {
 			self = this;
 			this.el.className += ' ' + this.fadeOutClass;
 			this.cursor.className += ' ' + this.fadeOutClass;
-			return setTimeout(function() {
+			return setTimeout(function () {
 				self.arrayPos++;
 				self.replaceText('');
 
 				// Resets current string if end of loop reached
-				if(self.strings.length > self.arrayPos) {
+				if (self.strings.length > self.arrayPos) {
 					self.typewrite(self.strings[self.sequence[self.arrayPos]], 0);
 				} else {
 					self.typewrite(self.strings[0], 0);
@@ -374,7 +327,7 @@
 		},
 
 		// Replaces current text in the HTML element
-		replaceText: function(str) {
+		replaceText: function (str) {
 			if (this.attr) {
 				this.el.setAttribute(this.attr, str);
 			} else {
@@ -389,9 +342,9 @@
 		},
 
 		// Shuffles the numbers in the given array.
-		shuffleArray: function(array) {
+		shuffleArray: function (array) {
 			var tmp, current, top = array.length;
-			if(top) while(--top) {
+			if (top) while (--top) {
 				current = Math.floor(Math.random() * (top + 1));
 				tmp = array[current];
 				array[current] = array[top];
@@ -399,27 +352,7 @@
 			}
 			return array;
 		},
-
-		// Start & Stop currently not working
-
-		// , stop: function() {
-		//     var self = this;
-
-		//     self.stop = true;
-		//     clearInterval(self.timeout);
-		// }
-
-		// , start: function() {
-		//     var self = this;
-		//     if(self.stop === false)
-		//        return;
-
-		//     this.stop = false;
-		//     this.init();
-		// }
-
-		// Reset and rebuild the element
-		reset: function() {
+		reset: function () {
 			var self = this;
 			clearInterval(self.timeout);
 			var id = this.el.getAttribute('id');
@@ -436,11 +369,11 @@
 
 	};
 
-	Typed.new = function(selector, option) {
+	Typed.new = function (selector, option) {
 		var elements = Array.prototype.slice.apply(document.querySelectorAll(selector));
-		elements.forEach(function(element) {
+		elements.forEach(function (element) {
 			var instance = element._typed,
-			    options = typeof option == 'object' && option;
+				options = typeof option == 'object' && option;
 			if (instance) { instance.reset(); }
 			element._typed = instance = new Typed(element, options);
 			if (typeof option == 'string') instance[option]();
@@ -448,11 +381,11 @@
 	};
 
 	if ($) {
-		$.fn.typed = function(option) {
-			return this.each(function() {
+		$.fn.typed = function (option) {
+			return this.each(function () {
 				var $this = $(this),
-				    data = $this.data('typed'),
-				    options = typeof option == 'object' && option;
+					data = $this.data('typed'),
+					options = typeof option == 'object' && option;
 				if (data) { data.reset(); }
 				$this.data('typed', (data = new Typed(this, options)));
 				if (typeof option == 'string') data[option]();
@@ -492,13 +425,13 @@
 		// either html or text
 		contentType: 'html',
 		// call when done callback function
-		callback: function() {},
+		callback: function () { },
 		// starting callback function before each string
-		preStringTyped: function() {},
+		preStringTyped: function () { },
 		//callback for every typed string
-		onStringTyped: function() {},
+		onStringTyped: function () { },
 		// callback for reset
-		resetCallback: function() {}
+		resetCallback: function () { }
 	};
 
 

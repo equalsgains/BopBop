@@ -1,6 +1,3 @@
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
 
     chrome.storage.local.set({ info: "awesome" }, function () {
@@ -18,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
             $("#saveMessage").fadeOut("fast");
             $("#saveMessage").fadeIn("slow");
             $("#saveToken").fadeOut("fast");
-
-
             // add the value to local storage when enter key is pressed
             console.log("you entered " + $('#accesstoken').val());
             $("#saveMessage").slideDown();

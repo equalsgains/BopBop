@@ -5,11 +5,6 @@ if (course1.indexOf('/') !== -1) {
 } else {
     course = course1;
 }
-
-
-
-
-
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         console.log(sender.tab ?
