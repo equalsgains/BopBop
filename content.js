@@ -1,16 +1,1 @@
-
-course1 = document.URL.substring(document.URL.indexOf('/courses/') + 9);
-if (course1.indexOf('/') !== -1) {
-    course = course1.substring(0, course1.indexOf('/'));
-} else {
-    course = course1;
-}
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        console.log(sender.tab ?
-            "from a content script:" + sender.tab.url :
-            "from the extension");
-        if (request.getDomain == true)
-            sendResponse({ domain: document.domain, course: course });
-    });
-
+course1=document.URL.substring(document.URL.indexOf("/courses/")+9),-1!==course1.indexOf("/")?course=course1.substring(0,course1.indexOf("/")):course=course1,chrome.runtime.onMessage.addListener(function(e,o,n){console.log(o.tab?"from a content script:"+o.tab.url:"from the extension"),1==e.getDomain&&n({domain:document.domain,course:course})});
