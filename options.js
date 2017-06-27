@@ -6,7 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
             //Pull text from user inputbox
             var token = $('#accesstoken').val();
             //Save it to the localStorage variable which will always remember what you store in it
-            localStorage["Access_token"] = token;
+            chrome.storage.local.set ({
+                Access_token: token
+            }, function () {
+                alert("it got");
+            } )
             $('#accesstoken').val("");
             $("input[type='text']").fadeOut();
             $(this).fadeOut();
@@ -16,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
             $("#saveMessage").fadeIn("slow");
             $("#saveToken").fadeOut("fast");
             // add the value to local storage when enter key is pressed
-            console.log("you entered " + $('#accesstoken').val());
             $("#saveMessage").slideDown();
             $('#resetMessage').slideUp();
             $(this).val("");
@@ -51,10 +54,13 @@ document.addEventListener("DOMContentLoaded", function () {
             $("#saveMessage").fadeIn("slow");
             $("#saveToken").fadeOut("fast");
 
-
             // add the value to local storage when enter key is pressed
-            localStorage["Access_token"] = $(this).val();
-            console.log("you entered " + $(this).val());
+            // localStorage["Access_token"] = $(this).val();
+            chrome.storage.local.set ({
+                Access_token: $(this).val()
+            }, function () {
+                alert("it got");
+            } )
             $("#saveMessage").slideDown();
             $('#resetMessage').slideUp();
             $(this).val("");
