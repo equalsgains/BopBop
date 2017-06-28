@@ -15,7 +15,7 @@ document.getElementById("refreshTab1").onclick = function () {
     location.reload();
 };
 
-var access_token = localStorage.Access_token;
+var access_token;
 var c = {};
 var t = {};
 var s = [];
@@ -58,201 +58,217 @@ function startInterval() {
 
 }
 
-chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 
-    if (access_token == undefined || access_token == null) {
-        $('#overlay').css({ "display": "block" });
-    }
 
-    if (access_token !== undefined && access_token !== null) {
-        $('#overlay').css({ "display": "none" });
-    }
-    var domDomain = document.domain;
 
-    if (domain == "" && access_token == undefined == false) {
-        setTimeout(startInterval, 1000);
-    }
+chrome.storage.local.get(function (a) {
+    access_token = a.Access_token;
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 
-    chrome.tabs.sendMessage(tabs[0].id, { getDomain: true }, function (response) {
-        console.log(response);
-        info = response;
-        domain = info.domain;
-        courseNum = info.course;
-        console.log(courseNum);
-        // gathered domain and course number
-        // create loading bar
-        $.ajax({
-            url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/',
-            type: 'GET',
-            data: 'per_page=100&cross_domain_login=siteadmin.instructure.com&include[]=sections',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-            },
-            success: function (getCourse) {
-                courseObj = getCourse;
-                console.log("xxxxxxxxxxxxxxxxCOURSExxxxxxxxxxxxxxxx");
-                c.name = courseObj.name;
-                c.start_at = courseObj.start_at;
-                c.end_at = courseObj.end_at;
-                c.root_account = courseObj.root_account_id;
-                c.term = courseObj.enrollment_term_id;
-                getTermDates();
-                getMostRecent(function () {
-                    console.log("we got the teacher");
-                    $('#loadingT').addClass("hideItem");
-                    $('#recentTeacherBTN').removeClass('hideItem');
-                    $('#recentTeacherBTN').fadeOut(300);
-                    $('#recentTeacherBTN').fadeIn("slow");
+        if (access_token == undefined || access_token == null) {
+            $('#overlay').css({ "display": "block" });
+        }
 
-                });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                if (xhr.status == 404 && access_token !== undefined) {
-                    console.log("we have 404");
-                    $('#overlay2').css({ "display": "block" });
-                }
-                if (xhr.status == 401 && access_token !== undefined) {
-                    console.log("we have 401");
-                    $('#overlay1').css({ "display": "block" });
-                } 
-            }
-        });
+        if (access_token !== undefined && access_token !== null) {
+            $('#overlay').css({ "display": "none" });
+        }
+        var domDomain = document.domain;
 
-        // get all sections
+        if (domain == "" && access_token == undefined == false) {
+            setTimeout(startInterval, 1000);
+        }
 
-        $.ajax({
-            url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/sections',
-            type: 'GET',
-            data: 'per_page=100&cross_domain_login=siteadmin.instructure.com',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-            },
-            success: function (response) {
-                sections = response;
-                console.log("xxxxxxxxxxxxxSECTIONSxxxxxxxxxxxxxxxx");
-                sectionsDone = true;
-                for (var i = 0; i < sections.length; i++) {
-                    s.push(sections[i] = {
-                        name: sections[i].name,
-                        start_at: sections[i].start_at,
-                        end_at: sections[i].end_at,
-                        sectionId: sections[i].id
-                    });
-                };
-                setTimeout(function () {
-                    clearInterval(checking);
-                }, 300);
-
-            }
-        });
-
-        // get term dates
-        function getTermDates() {
+        chrome.tabs.sendMessage(tabs[0].id, { getDomain: true }, function (response) {
+            console.log(response);
+            info = response;
+            domain = info.domain;
+            courseNum = info.course;
+            console.log(courseNum);
+            // gathered domain and course number
+            // create loading bar
             $.ajax({
-                url: 'https://' + domain + '/api/v1/accounts/' + c.root_account + '/terms/',
+                url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/',
                 type: 'GET',
-                data: 'per_page=100&cross_domain_login=siteadmin.instructure.com&include[]=overrides',
+                data: 'per_page=100&cross_domain_login=siteadmin.instructure.com&include[]=sections',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
                 },
-                success: function (response) {
-                    getTerms = response;
-                    terms = getTerms.enrollment_terms;
-                    console.log("xxxxxxxxxxxxxTERMSxxxxxxxxxxxxxxxx");
-                    for (var i = 0; i < terms.length; i++) {
-                        if (terms[i].id === c.term) {
-                            t.name = terms[i].name;
-                            t.start_at = terms[i].start_at;
-                            t.end_at = terms[i].end_at;
-                            overrides = terms[i].overrides;
-
-                        }
-
-                    };
-                    if (sectionsDone !== false) {
-                        $('#loadingD').addClass("hideItem");
-                        $('#retrieve').removeClass('hideItem');
-                        $('#retrieve').fadeOut("fast");
-                        $('#retrieve').fadeIn("slow");
-                    }
-                }
-            });
-        };
-
-        //get most recent teacher
-
-        function getMostRecent(onComplete) {
-            $.ajax({
-                url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/enrollments',
-                type: 'GET',
-                data: 'per_page=100&cross_domain_login=siteadmin.instructure.com&type[]=TeacherEnrollment&include[]=email',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-                },
-                success: function (response) {
-                    teachers = response;
-                    console.log("xxxxxxxxxxxxxENROLLMENTSxxxxxxxxxxxxxxxx");
-                    function dateFromString(str) {
-                        // Fix date string before conversion -- some spaces need to be removed:
-                        if (teachers.last_activity_at !== null) {
-                            str = str.last_activity_at;
-                            return new Date(str);
-                        }
-                    }
-
-                    function mostRecent(a, b) {
-                        return dateFromString(a) > dateFromString(b) ? a : b;
-                    };
-                    if (teachers.length === 0) {
-                        console.log("sorry! I wasn't able to find a teacher");
+                success: function (getCourse) {
+                    courseObj = getCourse;
+                    console.log("xxxxxxxxxxxxxxxxCOURSExxxxxxxxxxxxxxxx");
+                    c.name = courseObj.name;
+                    c.start_at = courseObj.start_at;
+                    c.end_at = courseObj.end_at;
+                    c.root_account = courseObj.root_account_id;
+                    c.term = courseObj.enrollment_term_id;
+                    getTermDates();
+                    getMostRecent(function () {
+                        console.log("we got the teacher");
                         $('#loadingT').addClass("hideItem");
-                        $('#peopleTab').attr('href', 'https://' + domain + '/courses/' + courseNum + '/users');
-                        setTimeout(function () {
-                            $('#noTeacher').removeClass('hideItem');
-                        }, 500);
+                        $('#recentTeacherBTN').removeClass('hideItem');
+                        $('#recentTeacherBTN').fadeOut(300);
+                        $('#recentTeacherBTN').fadeIn("slow");
+
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 404 && access_token !== undefined) {
+                        console.log("we have 404");
+                        $('#overlay2').css({ "display": "block" });
                     }
-                    if (teachers.length) {
-                        recentTeacher = teachers.reduce(mostRecent);
-                        teacherID = recentTeacher.user_id.toString();
-                        getTeachersObj(onComplete);
+                    if (xhr.status == 401 && access_token !== undefined) {
+                        console.log("we have 401");
+                        $('#overlay1').css({ "display": "block" });
                     }
                 }
             });
-        };
 
-        function getTeachersObj(onComplete) {
+            // get all sections
 
             $.ajax({
-                url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/users/',
+                url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/sections',
                 type: 'GET',
-                data: 'per_page=100&cross_domain_login=siteadmin.instructure.com&include[]=email&user_ids[]=' + teacherID,
+                data: 'per_page=100&cross_domain_login=siteadmin.instructure.com',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
                 },
                 success: function (response) {
-                    teacherObj = response;
-                    console.log("xxxxxxxxxxxxxTEACHERxxxxxxxxxxxxxxxx");
-                    onComplete();
-                    $()
+                    sections = response;
+                    console.log("xxxxxxxxxxxxxSECTIONSxxxxxxxxxxxxxxxx");
+                    sectionsDone = true;
+                    for (var i = 0; i < sections.length; i++) {
+                        s.push(sections[i] = {
+                            name: sections[i].name,
+                            start_at: sections[i].start_at,
+                            end_at: sections[i].end_at,
+                            sectionId: sections[i].id
+                        });
+                    };
+                    setTimeout(function () {
+                        clearInterval(checking);
+                    }, 300);
+
                 }
             });
-        };
-        // dsiplay most recent teaacher's email
-        $('#recentTeacherBTN').on("click", function () {
-            // hide the buttons once it's clicked
-            tEmail = teacherObj[0].email;
-            $(this).css({ "display": "none" });
-            // $('#links').css({ "display": "none" });
-            Typed.new('.bopBop', {
-                strings: ["Bop ", "Bop "],
-                typeSpeed: 0
-            }); setTimeout(function () {
-                $('.loader').css({ "display": "none" });
-                spitRecentTeacher();
-            }, 950);
+
+            // get term dates
+            function getTermDates() {
+                $.ajax({
+                    url: 'https://' + domain + '/api/v1/accounts/' + c.root_account + '/terms/',
+                    type: 'GET',
+                    data: 'per_page=100&cross_domain_login=siteadmin.instructure.com&include[]=overrides',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+                    },
+                    success: function (response) {
+                        getTerms = response;
+                        terms = getTerms.enrollment_terms;
+                        console.log("xxxxxxxxxxxxxTERMSxxxxxxxxxxxxxxxx");
+                        for (var i = 0; i < terms.length; i++) {
+                            if (terms[i].id === c.term) {
+                                t.name = terms[i].name;
+                                t.start_at = terms[i].start_at;
+                                t.end_at = terms[i].end_at;
+                                overrides = terms[i].overrides;
+
+                            }
+
+                        };
+                        if (sectionsDone !== false) {
+                            $('#loadingD').addClass("hideItem");
+                            $('#retrieve').removeClass('hideItem');
+                            $('#retrieve').fadeOut("fast");
+                            $('#retrieve').fadeIn("slow");
+                        }
+                    }
+                });
+            };
+
+            //get most recent teacher
+
+            function getMostRecent(onComplete) {
+                $.ajax({
+                    url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/enrollments',
+                    type: 'GET',
+                    data: 'per_page=100&cross_domain_login=siteadmin.instructure.com&type[]=TeacherEnrollment&include[]=email',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+                    },
+                    success: function (response) {
+                        teachers = response;
+                        console.log("xxxxxxxxxxxxxENROLLMENTSxxxxxxxxxxxxxxxx");
+                        function dateFromString(str) {
+                            // Fix date string before conversion -- some spaces need to be removed:
+                            if (teachers.last_activity_at !== null) {
+                                str = str.last_activity_at;
+                                return new Date(str);
+                            }
+                        }
+
+                        function mostRecent(a, b) {
+                            return dateFromString(a) > dateFromString(b) ? a : b;
+                        };
+                        if (teachers.length === 0) {
+                            console.log("sorry! I wasn't able to find a teacher");
+                            $('#loadingT').addClass("hideItem");
+                            $('#peopleTab').attr('href', 'https://' + domain + '/courses/' + courseNum + '/users');
+                            setTimeout(function () {
+                                $('#noTeacher').removeClass('hideItem');
+                            }, 500);
+                        }
+                        if (teachers.length) {
+                            recentTeacher = teachers.reduce(mostRecent);
+                            teacherID = recentTeacher.user_id.toString();
+                            getTeachersObj(onComplete);
+                        }
+                    }
+                });
+            };
+
+            function getTeachersObj(onComplete) {
+
+                $.ajax({
+                    url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/users/',
+                    type: 'GET',
+                    data: 'per_page=100&cross_domain_login=siteadmin.instructure.com&include[]=email&user_ids[]=' + teacherID,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+                    },
+                    success: function (response) {
+                        teacherObj = response;
+                        console.log("xxxxxxxxxxxxxTEACHERxxxxxxxxxxxxxxxx");
+                        onComplete();
+                        $()
+                    }
+                });
+            };
+            // dsiplay most recent teaacher's email
+            $('#recentTeacherBTN').on("click", function () {
+                // hide the buttons once it's clicked
+                tEmail = teacherObj[0].email;
+                $(this).css({ "display": "none" });
+                // $('#links').css({ "display": "none" });
+                Typed.new('.bopBop', {
+                    strings: ["Bop ", "Bop "],
+                    typeSpeed: 0
+                }); setTimeout(function () {
+                    $('.loader').css({ "display": "none" });
+                    spitRecentTeacher();
+                }, 950);
+            });
         });
     });
 });
+
+
+
+
+
+
+
+
+
+
 
 // Get all dates to display
 $('#retrieve').on("click", function () {
