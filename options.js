@@ -4,9 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var token = $('#accesstoken').val();
         chrome.storage.local.set({
             Access_token: token
-        }, function () {
-            alert("it got");
-        })
+        });
         $('#accesstoken').val("");
         $("input[type='text']").fadeOut();
         $(this).fadeOut();
@@ -21,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#resetToken').slideDown();
         $("input[type='text']").val() === "";
     });
-    console.log("loaded");
     $("#resetToken").on('click', function () {
         $('#accesstoken').val("");
         chrome.storage.local.clear(function (){});
@@ -34,17 +31,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     $("input[type='text']").keypress(function (e) {
         if (e.which === 13 && $(this).val() !== "") {
+            chrome.storage.local.set({
+                Access_token: $(this).val()
+            });
             $(this).fadeOut();
             $("#tokenTitle").fadeOut();
             $("#saveMessage").removeClass("hideItem");
             $("#saveMessage").fadeOut("fast");
             $("#saveMessage").fadeIn("slow");
             $("#saveToken").fadeOut("fast");
-            chrome.storage.local.set({
-                Access_token: $(this).val()
-            }, function () {
-                alert("it got");
-            })
             $("#saveMessage").slideDown();
             $('#resetMessage').slideUp();
             $(this).val("");
