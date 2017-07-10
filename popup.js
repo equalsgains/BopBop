@@ -14,7 +14,7 @@ document.getElementById("refreshTab1").onclick = function () {
     });
     location.reload();
 };
-var access_token;
+var access_token = localStorage.Access_token;
 var c = {};
 var t = {};
 var s = [];
@@ -32,6 +32,12 @@ var sns = [];
 var eve = [];
 var today = new Date();
 var checking = setInterval(function () { checkIfDone() }, 1500);
+var checkLinks;
+function checkLinks() {
+    chrome.tabs.executeScript({
+        file: 'checkLinks.js'
+    });
+}
 function checkIfDone() {
     if (sectionsDone !== false) {
         $('#loadingD').addClass("hideItem");
@@ -58,6 +64,7 @@ chrome.storage.local.get(function (a) {
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     if (access_token == undefined || access_token == null) {
         $('#overlay').css({ "display": "block" });
+        reload();
     }
     if (access_token !== undefined && access_token !== null) {
         $('#overlay').css({ "display": "none" });
@@ -67,11 +74,9 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         setTimeout(startInterval, 1000);
     }
     chrome.tabs.sendMessage(tabs[0].id, { getDomain: true }, function (response) {
-        console.log(response);
         info = response;
         domain = info.domain;
         courseNum = info.course;
-        console.log(courseNum);
         $.ajax({
             url: 'https://' + domain + '/api/v1/courses/' + courseNum + '/',
             type: 'GET',
@@ -88,12 +93,10 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                 c.term = courseObj.enrollment_term_id;
                 getTermDates();
                 getMostRecent(function () {
-                    console.log("we got the teacher");
                     $('#loadingT').addClass("hideItem");
                     $('#recentTeacherBTN').removeClass('hideItem');
                     $('#recentTeacherBTN').fadeOut(300);
                     $('#recentTeacherBTN').fadeIn("slow");
-
                 });
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -139,7 +142,6 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                 success: function (response) {
                     getTerms = response;
                     terms = getTerms.enrollment_terms;
-                    console.log("xxxxxxxxxxxxxTERMSxxxxxxxxxxxxxxxx");
                     for (var i = 0; i < terms.length; i++) {
                         if (terms[i].id === c.term) {
                             t.name = terms[i].name;
@@ -177,7 +179,6 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                         return dateFromString(a) > dateFromString(b) ? a : b;
                     };
                     if (teachers.length === 0) {
-                        console.log("sorry! I wasn't able to find a teacher");
                         $('#loadingT').addClass("hideItem");
                         $('#peopleTab').attr('href', 'https://' + domain + '/courses/' + courseNum + '/users');
                         setTimeout(function () {
@@ -221,7 +222,6 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     });
 });
 $('#retrieve').on("click", function () {
-    // hide the buttons once it's clicked
     $(this).css({ "display": "none" });
     Typed.new('.bopBop', {
         strings: ["Bop ", "Bop "],
@@ -238,6 +238,9 @@ window.addEventListener('DOMContentLoaded', function () {
         var newURL = 'http://' + domain + '/courses/' + courseNum + '/link_validator?cross_domain_login=siteadmin.instructure.com';
         chrome.tabs.create({ url: newURL });
     });
+});
+$('#linkCheck').on('click', function () {
+    checkLinks();
 });
 function spitAllinfo() {
     spitCourseInfo();
@@ -283,7 +286,6 @@ function spitTermInfo() {
     }
     if (today < tstart && tstart !== " Nada") {
         $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + t.name + '"></div><li><span class="StartEnd">Start</span> ' + tstart + '</li><li><span class="StartEnd">End</span> ' + tend + '</li>');
-
     } else if (today > tend && tend !== " Nada") {
         $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Already Ended 😘 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge"><input disabled="true" class="dNames"  tabindex="1" autocomplete="off" type="text" value="' + t.name + '"></div><li><span class="StartEnd">Start</span> ' + tstart + '</li><li><span class="StartEnd redText">End</span> ' + tend + '</li>');
     } else {
@@ -294,7 +296,6 @@ function spitSectionsInfo() {
     for (var i = 0; i < s.length; i++) {
         var sstart = new Date(s[i].start_at);
         var send = new Date(s[i].end_at);
-
         if (s[i].start_at == null) {
             sstart = " Nada";
         }
@@ -326,7 +327,6 @@ function spitStudentTerm() {
     if (overrides.StudentEnrollment.end_at == null) {
         tendS = " Nada";
     }
-    console.log(overrides.StudentEnrollment.start_at);
     if (today < tstartS && tstartS !== " Nada") {
         $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">Students can access from:</div><li><span class="StartEnd redText">Start</span> ' + tstartS + '</li><li><span class="StartEnd">End</span> ' + tendS + '</li>');
     } else if (today > tendS && tendS !== " Nada") {
@@ -348,7 +348,6 @@ function spitTeacherTerm() {
         $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Has Not Started 😒 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">Teachers can access from:</div><li><span class="StartEnd redText">Start</span> ' + tstartT + '</li><li><span class="StartEnd">End</span> ' + tendT + '</li>');
     } else if (today > tendT && tendT !== " Nada") {
         $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p class="redText">Already Ended 😘 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">Teachers can access from:</div><li><span class="StartEnd">Start</span> ' + tstartT + '</li><li><span class="StartEnd redText">End</span> ' + tendT + '</li>');
-        console.log("should be once");
     } else {
         $('#container').append('<a class="slide-fade show" href=https://' + domain + '/accounts/' + c.root_account + '/terms target="_blank"><div class="panel panel-yellow"><div class="panel-heading"><div class="row"><div class="col-xs-3"><h1 class="titles">Term</h1><p>Looks Good! 🙌 </p><i class="fa fa-university fa-2x"></i></a></div><div class="col-xs-9 text-right"><div class="huge">Teachers can access from:</div><li><span class="StartEnd">Start</span> ' + tstartT + '</li><li><span class="StartEnd">End</span> ' + tendT + '</li>');
     }
