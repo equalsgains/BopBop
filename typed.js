@@ -1,5 +1,3 @@
-
-
 ! function (window, document, $) {
 	"use strict";
 	var Typed = function (el, options) {
