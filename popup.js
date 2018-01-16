@@ -247,6 +247,9 @@ $('#spanish').on("click", function(){
 $('#english').on("click", function(){
     changeLanguage("en");
 });
+$('#portuguese').on("click", function(){
+    changeLanguage("pt-BR");
+});
 $('#retrieve').on("click", function () {
     $(this).css({ "display": "none" });
     Typed.new('.bopBop', {
