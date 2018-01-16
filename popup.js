@@ -221,6 +221,32 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         });
     });
 });
+
+function changeLanguage (languageSelected) {
+    $.ajax({
+        url: 'https://siteadmin.instructure.com/api/v1/users/4597752',
+        type: 'PUT',
+        data: 'user[locale]=' + languageSelected,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+        },
+        success: function (response) {
+            refreshPage();
+            window.close();
+        }
+    });
+};
+function refreshPage () {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
+    });
+};
+$('#spanish').on("click", function(){
+    changeLanguage("es");
+});
+$('#english').on("click", function(){
+    changeLanguage("en");
+});
 $('#retrieve').on("click", function () {
     $(this).css({ "display": "none" });
     Typed.new('.bopBop', {
