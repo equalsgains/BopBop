@@ -101,7 +101,9 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 if (xhr.status == 404 && access_token !== undefined) {
+                    setTimeout(function () {
                     $('#overlay2').css({ "display": "block" });
+                    }, 5000);
                 }
                 if (xhr.status == 401 && access_token !== undefined) {
                     $('#overlay1').css({ "display": "block" });
